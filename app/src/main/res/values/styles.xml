@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tema base do seu aplicativo -->
+    <style name="ToolbarTitleStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Estilo para os itens do menu -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Remove a ActionBar padrão -->
+        <item name="windowActionBar">false</item>
+
+        <!-- Configurações opcionais -->
+        <item name="colorControlNormal">@color/toolbar_text</item> <!-- Cor dos ícones -->
+    </style>
+</resources>

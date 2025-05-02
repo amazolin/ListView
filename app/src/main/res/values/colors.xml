@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Cores da Toolbar (modo claro) -->
+    <color name="toolbar_dark">#2D2D2D</color>  <!-- Cinza muito escuro -->
+    <color name="toolbar_text">#FFFFFF</color>   <!-- Texto branco -->
+</resources>
