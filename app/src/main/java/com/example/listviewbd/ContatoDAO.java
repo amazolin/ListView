@@ -35,7 +35,7 @@ public class ContatoDAO {
             Contato c = new Contato(
                     cursor.getLong(0),   // id
                     cursor.getString(1), // nome
-                    cursor.getString(2), // email (corrigida a ordem)
+                    cursor.getString(2), // email
                     cursor.getString(3)  // telefone
             );
             lista.add(c);

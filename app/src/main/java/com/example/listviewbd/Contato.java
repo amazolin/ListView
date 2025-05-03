@@ -1,7 +1,7 @@
 package com.example.listviewbd;
 
 public class Contato {
-    private long id;  // Adicionado campo ID
+    private long id;
     private String nome;
     private String telefone;
     private String email;
