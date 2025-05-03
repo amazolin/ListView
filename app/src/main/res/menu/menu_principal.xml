@@ -13,10 +13,10 @@
         android:onClick="sair"
         android:title="Sair" />
 
-    <!-- Novo item para abrir a tela de cadastro -->
+    <!-- Novo item para abrir a tela de cadastro
     <item
         android:id="@+id/menu_cadastro"
         android:title="Cadastro"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
 </menu>

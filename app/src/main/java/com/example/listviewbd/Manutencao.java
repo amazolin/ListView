@@ -21,7 +21,7 @@ public class Manutencao extends AppCompatActivity {
     private Button btnExcluirManutencao;
     private Button btnAtualizarManutencao;
     private Button btnVoltarManutencao;
-    private int contatoIndex = -1;
+    private long contatoId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,7 @@ public class Manutencao extends AppCompatActivity {
             return insets;
         });
 
+        // Inicializa componentes
         edtNomeManutencao = findViewById(R.id.edtNomeManutencao);
         edtEmailManutencao = findViewById(R.id.edtEmailManutencao);
         edtTelefoneManutencao = findViewById(R.id.edtTelefoneManutencao);
@@ -41,55 +42,62 @@ public class Manutencao extends AppCompatActivity {
         btnAtualizarManutencao = findViewById(R.id.btnAtualizarManutencao);
         btnVoltarManutencao = findViewById(R.id.btnVoltarManutencao);
 
-        // Recupera os dados do contato selecionado
+        // Recupera dados do Intent
         Intent intent = getIntent();
-        if (intent.hasExtra("contato_index")) {
-            contatoIndex = intent.getIntExtra("contato_index", -1);
+        if (intent != null && intent.hasExtra("contato_id")) {
+            contatoId = intent.getLongExtra("contato_id", -1);
             edtNomeManutencao.setText(intent.getStringExtra("contato_nome"));
-            edtTelefoneManutencao.setText(intent.getStringExtra("contato_telefone"));
             edtEmailManutencao.setText(intent.getStringExtra("contato_email"));
+            edtTelefoneManutencao.setText(intent.getStringExtra("contato_telefone"));
         }
 
-        btnAtualizarManutencao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (contatoIndex != -1) {
-                    String nome = edtNomeManutencao.getText().toString();
-                    String email = edtEmailManutencao.getText().toString();
-                    String telefone = edtTelefoneManutencao.getText().toString();
+        // Listeners dos botões
+        btnAtualizarManutencao.setOnClickListener(v -> atualizarContato());
+        btnExcluirManutencao.setOnClickListener(v -> excluirContato());
+        btnVoltarManutencao.setOnClickListener(v -> finish());
+    }
 
-                    if (!nome.isEmpty() && !email.isEmpty() && !telefone.isEmpty()) {
-                        Contato contatoAtualizado = new Contato(nome, telefone, email);
-                        ContatoDAO.atualizar(contatoIndex, contatoAtualizado);
-                        Toast.makeText(Manutencao.this, "Aluno atualizado com sucesso!", Toast.LENGTH_SHORT).show();
-                        finish(); // Retorna para a tela principal
-                    } else {
-                        Toast.makeText(Manutencao.this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(Manutencao.this, "Erro ao identificar o aluno!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+    private void atualizarContato() {
+        if (contatoId == -1) {
+            Toast.makeText(this, "Contato inválido!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        btnExcluirManutencao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (contatoIndex != -1) {
-                    ContatoDAO.remover(contatoIndex);
-                    Toast.makeText(Manutencao.this, "Aluno excluído com sucesso!", Toast.LENGTH_SHORT).show();
-                    finish(); // Retorna para a tela principal
-                } else {
-                    Toast.makeText(Manutencao.this, "Erro ao identificar o aluno!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        String nome = edtNomeManutencao.getText().toString().trim();
+        String email = edtEmailManutencao.getText().toString().trim();
+        String telefone = edtTelefoneManutencao.getText().toString().trim();
 
-        btnVoltarManutencao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish(); // Simplesmente volta para a tela anterior
-            }
-        });
+        if (nome.isEmpty() || email.isEmpty() || telefone.isEmpty()) {
+            Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Contato contatoAtualizado = new Contato(contatoId, nome, telefone, email);
+        ContatoDAO dao = new ContatoDAO(this);
+        boolean sucesso = dao.atualizar(contatoAtualizado) > 0;
+
+        if (sucesso) {
+            Toast.makeText(this, "Contato atualizado com sucesso!", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Toast.makeText(this, "Erro ao atualizar o contato!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void excluirContato() {
+        if (contatoId == -1) {
+            Toast.makeText(this, "Contato inválido!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ContatoDAO dao = new ContatoDAO(this);
+        boolean sucesso = dao.remover(contatoId) > 0;
+
+        if (sucesso) {
+            Toast.makeText(this, "Contato excluído com sucesso!", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Toast.makeText(this, "Erro ao excluir o contato!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

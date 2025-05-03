@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,45 +23,63 @@ public class MainActivity extends AppCompatActivity {
     private ListView lsvDados;
     private ArrayAdapter<Contato> adaptador;
     private List<Contato> listaContatos;
+    private ContatoDAO dao; // Movido para escopo da classe para reutilização
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        // Toolbar
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Edge-to-Edge (melhor legibilidade)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        lsvDados = findViewById(R.id.lsvDados);
+        // Inicializa o DAO uma única vez
+        dao = new ContatoDAO(this);
 
-        lsvDados.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Contato contatoSelecionado = listaContatos.get(position);
-                Intent intent = new Intent(MainActivity.this, Manutencao.class);
-                intent.putExtra("contato_index", position);
-                intent.putExtra("contato_nome", contatoSelecionado.getNome());
-                intent.putExtra("contato_telefone", contatoSelecionado.getTelefone());
-                intent.putExtra("contato_email", contatoSelecionado.getEmail());
-                startActivity(intent);
-            }
+        // ListView e Adaptador
+        lsvDados = findViewById(R.id.lsvDados);
+        atualizarLista(); // Carrega dados inicialmente
+
+        // Clique em um item da lista
+        lsvDados.setOnItemClickListener((parent, view, position, id) -> {
+            Contato contatoSelecionado = listaContatos.get(position);
+            abrirTelaManutencao(contatoSelecionado);
         });
+    }
+
+    // Método para abrir a tela de manutenção (reduz duplicação)
+    private void abrirTelaManutencao(Contato contato) {
+        Intent intent = new Intent(this, Manutencao.class);
+        intent.putExtra("contato_id", contato.getId());
+        intent.putExtra("contato_nome", contato.getNome());
+        intent.putExtra("contato_telefone", contato.getTelefone());
+        intent.putExtra("contato_email", contato.getEmail());
+        startActivity(intent);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Atualiza a lista sempre que a tela volta a ser exibida
-        atualizarLista();
+        atualizarLista(); // Atualiza a lista sempre que a Activity retorna ao foco
     }
 
+    // Atualiza a lista de contatos
     private void atualizarLista() {
-        listaContatos = ContatoDAO.getLista();
+        listaContatos = dao.listarTodos();
+
+        if (listaContatos.isEmpty()) {
+            Toast.makeText(this, "Nenhum contato cadastrado!", Toast.LENGTH_SHORT).show();
+        }
+
         adaptador = new ArrayAdapter<>(
                 this, android.R.layout.simple_list_item_1, listaContatos);
         lsvDados.setAdapter(adaptador);
@@ -79,19 +98,15 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.mnuSair) {
             finish();
             return true;
-        } else if (id == R.id.menu_cadastro) {
-            Intent intent = new Intent(this, Cadastro.class);
-            startActivity(intent);
+        } else if (id == R.id.mnuSalvar) {
+            startActivity(new Intent(this, Cadastro.class));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
     public boolean sair(MenuItem item) {
-        // Lógica para "sair"
         finish();
         return true;
     }
-
 }

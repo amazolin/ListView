@@ -1,24 +1,38 @@
 package com.example.listviewbd;
 
 public class Contato {
+    private long id;  // Adicionado campo ID
     private String nome;
     private String telefone;
     private String email;
 
-    //construtor
-
-    public Contato(String nome) {
-
+    // Construtor vazio (útil para algumas operações)
+    public Contato() {
     }
 
+    // Construtor sem ID (para inserção no banco)
     public Contato(String nome, String telefone, String email) {
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
     }
 
-    //getters and setters
+    // Construtor com ID (para atualização e consultas)
+    public Contato(long id, String nome, String telefone, String email) {
+        this.id = id;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
+    }
 
+    // Getters e Setters
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;
@@ -46,9 +60,8 @@ public class Contato {
 
     @Override
     public String toString() {
-        return "Nome:  " + nome +
-                "\nIdade:  " +telefone+
-                "\nEmail:  " +email;
+        return "Nome: " + nome +
+                "\nEmail: " + email +
+                "\nTelefone: " + telefone;
     }
 }
-
