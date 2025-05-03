@@ -7,4 +7,99 @@
     android:layout_height="match_parent"
     tools:context=".Manutencao">
 
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/lightgreen"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="81dp"
+            android:background="#3A3838"
+            android:fontFamily="@font/ar_one_sans_medium"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Manutenção"
+            android:textColor="#E7E5DF"
+            android:textSize="34sp" />
+
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="#1F1D1D" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="66dp" />
+
+        <EditText
+            android:id="@+id/edtNomeManutencao"
+            android:layout_width="match_parent"
+            android:layout_height="74dp"
+            android:ems="10"
+            android:hint="   Nome"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/edtEmailManutencao"
+            android:layout_width="match_parent"
+            android:layout_height="74dp"
+            android:ems="10"
+            android:hint="   E-mail"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/edtTelefoneManutencao"
+            android:layout_width="match_parent"
+            android:layout_height="74dp"
+            android:ems="10"
+            android:hint="   Telefone"
+            android:inputType="text" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="180dp" />
+
+        <Button
+            android:id="@+id/btnExcluirManutencao"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#FF9E80"
+            android:text="Excluir"
+            android:textSize="20sp" />
+        <Button
+            android:id="@+id/btnAtualizarManutencao"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#FF9E80"
+            android:text="Atualizar"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnVoltarManutencao"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#FF9E80"
+            android:text="Voltar"
+            android:textSize="20sp" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
