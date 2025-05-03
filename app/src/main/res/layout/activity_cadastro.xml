@@ -82,6 +82,16 @@
             android:backgroundTint="#FF9E80"
             android:text="Voltar"
             android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnSalvarCadastro"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#FF9E80"
+            android:text="Salvar"
+            android:textSize="20sp" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

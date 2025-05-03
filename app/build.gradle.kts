@@ -1,3 +1,6 @@
+
+
+
 plugins {
     alias(libs.plugins.android.application)
 }
@@ -24,7 +27,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+
     }
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -32,6 +38,17 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    android {
+        buildTypes {
+            debug {
+                // Evita compressão e melhora builds durante o dev
+                isMinifyEnabled = false
+            }
+        }
+    }
+
+
 }
 
 dependencies {
